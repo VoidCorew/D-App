@@ -1,8 +1,8 @@
-import 'package:d_app/models/glucose_entry.dart';
+import 'package:d_app/models/save_glucose_entry.dart';
 import 'package:d_app/utils/general_theme.dart';
 import 'package:flutter/material.dart';
 
-enum MeasureUnit { mmol, mgdl }
+// enum MeasureUnit { mmol, mgdl }
 
 class AddEntryScreen extends StatefulWidget {
   const AddEntryScreen({super.key});
@@ -27,6 +27,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _glucoseController.dispose();
@@ -45,9 +50,18 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                 children: [
                   Expanded(
                     child: TextField(
+                      cursorColor: Colors.lightGreenAccent,
                       controller: _glucoseController,
                       keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.lightGreenAccent,
+                          ),
+                        ),
+                        floatingLabelStyle: TextStyle(
+                          color: Colors.lightGreenAccent,
+                        ),
                         labelText: 'Уровень глюкозы',
                         border: OutlineInputBorder(),
                       ),
@@ -113,7 +127,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     double convertedValue =
                         _selectedUnit == MeasureUnit.mgdl ? value / 10 : value;
 
-                    final newEntry = GlucoseEntry(
+                    final newEntry = SaveGlucoseEntry(
                       date: DateTime.now(),
                       value: convertedValue,
                       unit: _selectedUnit!,

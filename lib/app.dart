@@ -23,10 +23,14 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'D_APP',
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: themeProvider.currentTheme,
+      // themeMode: Provider.of<ThemeProvider>(context).currentTheme,
       home: const MainNavigation(),
     );
   }

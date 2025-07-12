@@ -1,10 +1,12 @@
-import 'package:d_app/models/glucose_entry.dart';
+import 'package:d_app/models/save_glucose_entry.dart';
+import 'package:d_app/providers/glucose_provider.dart';
 import 'package:d_app/screens/add_entry_screen.dart';
 import 'package:d_app/screens/diabetes_info_screen.dart';
 import 'package:d_app/utils/general_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -14,29 +16,32 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<GlucoseEntry> glucoseData = [];
+  // List<GlucoseEntry> glucoseData = [];
 
   List<String> radioOptions = ['1 Тип', '2 Тип', 'Гестационный'];
   String _selectedOption = '1 Тип';
   String? _currentDiabetesType;
   // int? _selectedValue;
 
-  List<GlucoseEntry> getTodayEntries() {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    return glucoseData.where((entry) {
-        final entryDate = DateTime(
-          entry.date.year,
-          entry.date.month,
-          entry.date.day,
-        );
-        return entryDate == today;
-      }).toList()
-      ..sort((a, b) => b.date.compareTo(a.date));
-  }
+  // List<GlucoseEntry> getTodayEntries() {
+  //   final now = DateTime.now();
+  //   final today = DateTime(now.year, now.month, now.day);
+  //   return glucoseData.where((entry) {
+  //       final entryDate = DateTime(
+  //         entry.date.year,
+  //         entry.date.month,
+  //         entry.date.day,
+  //       );
+  //       return entryDate == today;
+  //     }).toList()
+  //     ..sort((a, b) => b.date.compareTo(a.date));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final glucoseProvider = context.watch<GlucoseProvider>();
+    final glucoseData = glucoseProvider.getEntriesForDay(DateTime.now());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: GeneralTheme.primary,
@@ -136,7 +141,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Expanded(
               child: Builder(
                 builder: (context) {
-                  final todayEntries = getTodayEntries();
+                  // final todayEntries = getTodayEntries();
+                  final todayEntries = glucoseData;
                   if (todayEntries.isEmpty) {
                     return Center(
                       child: const Text('У вас пока нет данных за сегодня'),
@@ -172,10 +178,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             CupertinoPageRoute(builder: (context) => AddEntryScreen()),
           );
 
-          if (result != null && result is GlucoseEntry) {
-            setState(() {
-              glucoseData.add(result);
-            });
+          if (result != null && result is SaveGlucoseEntry) {
+            // setState(() {
+            //   glucoseData.add(result);
+            // });
+            context.read<GlucoseProvider>().addEntry(result);
           }
         },
         child: Icon(Icons.add, color: Colors.black),

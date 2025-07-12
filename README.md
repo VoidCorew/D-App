@@ -14,3 +14,19 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+glucose_entry.dart
+
+```dart
+import 'package:d_app/screens/add_entry_screen.dart';
+
+class GlucoseEntry {
+  final DateTime date;
+  final double value;
+  final MeasureUnit unit;
+  final String? notes;
+
+  const GlucoseEntry({required this.date, required this.value, required this.unit, this.notes});
+}
+```

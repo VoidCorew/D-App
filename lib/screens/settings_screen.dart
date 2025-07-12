@@ -54,7 +54,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                 Switch(
                   activeColor: GeneralTheme.primary,
-                  value: Provider.of<ThemeProvider>(context).isDarkMode,
+                  value: Provider.of<ThemeProvider>(context).isDark,
                   onChanged:
                       (value) =>
                           Provider.of<ThemeProvider>(

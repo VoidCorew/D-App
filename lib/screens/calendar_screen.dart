@@ -1,5 +1,7 @@
+import 'package:d_app/providers/glucose_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class GlucoseEntry {
@@ -30,13 +32,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   List<GlucoseEntry> getEntriesForDay(DateTime day) {
     return glucoseData.where((entry) {
-      return entry.date.year == day.year && entry.date.month == day.month && entry.date.day == day.day;
+      return entry.date.year == day.year &&
+          entry.date.month == day.month &&
+          entry.date.day == day.day;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedEntries = getEntriesForDay(today);
+
+    final glucoseProvider = context.watch<GlucoseProvider>();
+    final entries = glucoseProvider.getEntriesForDay(today);
 
     return Scaffold(
       // appBar: PreferredSize(
@@ -72,14 +79,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
               ),
             ),
 
-            const SizedBox(height: 20,),
+            const SizedBox(height: 20),
 
-            Text('Записи за ${DateFormat('yyyy-MM-dd').format(today)}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-          
-            Expanded(child: selectedEntries.isEmpty ? const Center(child: Text('Нет данных за этот день')) : ListView.builder(itemCount: selectedEntries.length, itemBuilder: (context, index) {
-              final entry = selectedEntries[index];
-              return ListTile(title: Text('${entry.value.toStringAsFixed(1)} ммоль/г'), subtitle: Text(DateFormat('HH:mm').format(entry.date)),);
-            },)),
+            Text(
+              'Записи за ${DateFormat('yyyy-MM-dd').format(today)}',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+
+            Expanded(
+              child:
+                  selectedEntries.isEmpty
+                      ? const Center(child: Text('Нет данных за этот день'))
+                      : ListView.builder(
+                        itemCount: selectedEntries.length,
+                        itemBuilder: (context, index) {
+                          final entry = selectedEntries[index];
+                          return ListTile(
+                            title: Text(
+                              '${entry.value.toStringAsFixed(1)} ммоль/г',
+                            ),
+                            subtitle: Text(
+                              DateFormat('HH:mm').format(entry.date),
+                            ),
+                          );
+                        },
+                      ),
+            ),
           ],
         ),
       ),
