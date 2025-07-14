@@ -1,5 +1,12 @@
+import 'dart:math';
+
+import 'package:d_app/models/save_glucose_entry.dart';
 import 'package:d_app/providers/glucose_provider.dart';
+import 'package:d_app/screens/trash_screen.dart';
+import 'package:d_app/utils/general_theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,7 +28,7 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   DateTime today = DateTime.now();
 
-  final List<GlucoseEntry> glucoseData = [];
+  final List<SaveGlucoseEntry> glucoseData = [];
 
   // выбор дня
   void _onDaySelected(DateTime day, DateTime focusedDay) {
@@ -30,7 +37,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
-  List<GlucoseEntry> getEntriesForDay(DateTime day) {
+  List<SaveGlucoseEntry> getEntriesForDay(DateTime day) {
     return glucoseData.where((entry) {
       return entry.date.year == day.year &&
           entry.date.month == day.month &&
@@ -55,12 +62,27 @@ class _CalendarScreenState extends State<CalendarScreen> {
       //     ),
       //   ),
       // ),
-      appBar: AppBar(title: Text('Календарь'), elevation: 10),
+      appBar: AppBar(
+        title: Text('Календарь'),
+        actions: [
+          IconButton(
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  CupertinoPageRoute(builder: (context) => TrashScreen()),
+                ),
+            icon: Icon(Icons.delete, color: Colors.black),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text('Selected Day: ${today.toString().split(" ")[0]}'),
+            Text(
+              'Выбранный день: ${today.toString().split(" ")[0]}',
+              style: TextStyle(fontFamily: 'Jura', fontSize: 18),
+            ),
             Container(
               child: TableCalendar(
                 // locale: "ru_RU",
@@ -83,23 +105,53 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
             Text(
               'Записи за ${DateFormat('yyyy-MM-dd').format(today)}',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: GeneralTheme.titleStyle,
             ),
 
             Expanded(
               child:
-                  selectedEntries.isEmpty
-                      ? const Center(child: Text('Нет данных за этот день'))
+                  entries.isEmpty
+                      ? const Center(
+                        child: Text(
+                          'Нет данных за этот день',
+                          style: TextStyle(fontFamily: 'Jura'),
+                        ),
+                      )
                       : ListView.builder(
-                        itemCount: selectedEntries.length,
+                        itemCount: entries.length,
                         itemBuilder: (context, index) {
-                          final entry = selectedEntries[index];
-                          return ListTile(
-                            title: Text(
-                              '${entry.value.toStringAsFixed(1)} ммоль/г',
+                          final entry = entries[index];
+                          return Slidable(
+                            endActionPane: ActionPane(
+                              motion: StretchMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) {
+                                    glucoseProvider.deleteEntry(entry);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Text(
+                                          'Запись перемещена в корзину',
+                                          style: TextStyle(fontFamily: 'LXGW'),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icons.delete,
+                                  backgroundColor: Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                ),
+                              ],
                             ),
-                            subtitle: Text(
-                              DateFormat('HH:mm').format(entry.date),
+                            child: ListTile(
+                              title: Text(
+                                '${entry.value.toStringAsFixed(1)} ${glucoseProvider.unitText(entry)}',
+                                style: GeneralTheme.listTileTitleStyle,
+                              ),
+                              subtitle: Text(
+                                DateFormat('HH:mm').format(entry.date),
+                                style: GeneralTheme.listTileSubtitleStyle,
+                              ),
                             ),
                           );
                         },

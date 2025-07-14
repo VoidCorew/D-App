@@ -46,9 +46,56 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              // Row(
+              //   children: [
+              //     Expanded(
+              //       child: TextField(
+              //         cursorColor: Colors.lightGreenAccent,
+              //         controller: _glucoseController,
+              //         keyboardType: TextInputType.number,
+              //         decoration: const InputDecoration(
+              //           focusedBorder: OutlineInputBorder(
+              //             borderSide: BorderSide(
+              //               color: Colors.lightGreenAccent,
+              //             ),
+              //           ),
+              //           floatingLabelStyle: TextStyle(
+              //             color: Colors.lightGreenAccent,
+              //           ),
+              //           labelText: 'Уровень глюкозы',
+              //           border: OutlineInputBorder(),
+              //         ),
+              //       ),
+              //     ),
+
+              //     const SizedBox(width: 20),
+
+              //     DropdownMenu<MeasureUnit>(
+              //       initialSelection: MeasureUnit.mmol,
+              //       // controller: _glucoseController,
+              //       // requestFocusOnTap: true,
+              //       label: const Text('Еденицы измерения'),
+              //       onSelected: (MeasureUnit? unit) {
+              //         setState(() {
+              //           _selectedUnit = unit;
+              //         });
+              //       },
+              //       dropdownMenuEntries:
+              //           MeasureUnit.values
+              //               .map(
+              //                 (unit) => DropdownMenuEntry<MeasureUnit>(
+              //                   value: unit,
+              //                   label: _getUnitText(unit),
+              //                 ),
+              //               )
+              //               .toList(),
+              //     ),
+              //   ],
+              // ),
               Row(
                 children: [
                   Expanded(
+                    flex: 1,
                     child: TextField(
                       cursorColor: Colors.lightGreenAccent,
                       controller: _glucoseController,
@@ -62,33 +109,49 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                         floatingLabelStyle: TextStyle(
                           color: Colors.lightGreenAccent,
                         ),
-                        labelText: 'Уровень глюкозы',
+                        label: Text(
+                          'Уровень глюкозы',
+                          style: TextStyle(fontFamily: 'LXGW'),
+                        ),
+                        hint: Text(
+                          'Введите уровень глюкозы',
+                          style: TextStyle(
+                            fontFamily: 'LXGW',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                         border: OutlineInputBorder(),
                       ),
                     ),
                   ),
 
-                  const SizedBox(width: 20),
+                  const SizedBox(width: 10),
 
-                  DropdownMenu<MeasureUnit>(
-                    initialSelection: MeasureUnit.mmol,
-                    // controller: _glucoseController,
-                    // requestFocusOnTap: true,
-                    label: const Text('Еденицы измерения'),
-                    onSelected: (MeasureUnit? unit) {
-                      setState(() {
-                        _selectedUnit = unit;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        MeasureUnit.values
-                            .map(
-                              (unit) => DropdownMenuEntry<MeasureUnit>(
-                                value: unit,
-                                label: _getUnitText(unit),
-                              ),
-                            )
-                            .toList(),
+                  Expanded(
+                    flex: 1,
+                    child: DropdownMenu<MeasureUnit>(
+                      initialSelection: MeasureUnit.mmol,
+                      // controller: _glucoseController,
+                      // requestFocusOnTap: true,
+                      label: const Text(
+                        'Еденицы измерения',
+                        style: TextStyle(fontFamily: 'LXGW'),
+                      ),
+                      onSelected: (MeasureUnit? unit) {
+                        setState(() {
+                          _selectedUnit = unit;
+                        });
+                      },
+                      dropdownMenuEntries:
+                          MeasureUnit.values
+                              .map(
+                                (unit) => DropdownMenuEntry<MeasureUnit>(
+                                  value: unit,
+                                  label: _getUnitText(unit),
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
                 ],
               ),
@@ -109,12 +172,15 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                       ScaffoldMessenger.of(context).clearSnackBars();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          duration: Duration(milliseconds: 500),
+                          // duration: Duration(milliseconds: 500),
                           content: Row(
                             children: [
                               Icon(Icons.error, color: Colors.black),
                               const SizedBox(width: 10),
-                              const Text('Введите данные в поле!'),
+                              const Text(
+                                'Введите данные в поле!',
+                                style: TextStyle(fontFamily: 'LXGW'),
+                              ),
                             ],
                           ),
                         ),
@@ -137,7 +203,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                   },
                   child: const Text(
                     "Сохранить",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(fontFamily: 'LXGW', color: Colors.black),
                   ),
                 ),
               ),

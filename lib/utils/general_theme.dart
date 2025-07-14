@@ -8,7 +8,19 @@ class GeneralTheme {
   static const foreground = Colors.red;
 
   static const TextStyle titleStyle = TextStyle(
+    fontFamily: 'Jura',
     fontSize: 25,
     fontWeight: FontWeight.bold,
   );
+
+  static const TextStyle listTileTitleStyle = TextStyle(
+    fontFamily: 'LXGW',
+    fontSize: 18,
+  );
+  static const TextStyle listTileSubtitleStyle = TextStyle(
+    fontFamily: 'Jura',
+    fontSize: 16,
+  );
+
+  static const TextStyle radioTextStyle = TextStyle(fontFamily: 'Jura');
 }

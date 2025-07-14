@@ -13,6 +13,7 @@ void main() async {
   Hive.registerAdapter(SaveGlucoseEntryAdapter());
   Hive.registerAdapter(MeasureUnitAdapter());
   await Hive.openBox<SaveGlucoseEntry>('glucoseBox');
+  await Hive.openBox<SaveGlucoseEntry>('trashedGlucoseBox');
 
   runApp(
     MultiProvider(

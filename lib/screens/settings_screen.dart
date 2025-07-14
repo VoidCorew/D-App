@@ -16,54 +16,87 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Настройки')),
+      appBar: AppBar(
+        title: Text('Настройки', style: TextStyle(color: Colors.black)),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.dark_mode),
-
-                    const SizedBox(width: 20),
-
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Темная тема',
-                          style: TextStyle(
-                            fontSize: 22,
-                            // fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        const SizedBox(height: 5),
-
-                        Text(
-                          'Включить темную тему',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                  ],
+                const Text(
+                  'Основные',
+                  style: TextStyle(fontFamily: 'Jura', fontSize: 20),
                 ),
 
-                Switch(
-                  activeColor: GeneralTheme.primary,
-                  value: Provider.of<ThemeProvider>(context).isDark,
-                  onChanged:
-                      (value) =>
-                          Provider.of<ThemeProvider>(
-                            context,
-                            listen: false,
-                          ).toggleTheme(),
+                ListTile(
+                  leading: Icon(Icons.dark_mode),
+                  trailing: Switch(
+                    activeColor: GeneralTheme.primary,
+                    value: Provider.of<ThemeProvider>(context).isDark,
+                    onChanged:
+                        (value) =>
+                            Provider.of<ThemeProvider>(
+                              context,
+                              listen: false,
+                            ).toggleTheme(),
+                  ),
+                  title: const Text(
+                    'Темная тема',
+                    style: GeneralTheme.listTileTitleStyle,
+                  ),
+                  subtitle: const Text(
+                    'Включить темную тему',
+                    style: GeneralTheme.listTileSubtitleStyle,
+                  ),
                 ),
               ],
             ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Row(
+            //       children: [
+            //         Icon(Icons.dark_mode),
+
+            //         const SizedBox(width: 20),
+
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               'Темная тема',
+            //               style: TextStyle(
+            //                 fontSize: 22,
+            //                 // fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+
+            //             const SizedBox(height: 5),
+
+            //             Text(
+            //               'Включить темную тему',
+            //               style: TextStyle(color: Colors.grey),
+            //             ),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+
+            //     Switch(
+            //       activeColor: GeneralTheme.primary,
+            //       value: Provider.of<ThemeProvider>(context).isDark,
+            //       onChanged:
+            //           (value) =>
+            //               Provider.of<ThemeProvider>(
+            //                 context,
+            //                 listen: false,
+            //               ).toggleTheme(),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),

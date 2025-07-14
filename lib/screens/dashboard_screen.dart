@@ -5,6 +5,7 @@ import 'package:d_app/screens/diabetes_info_screen.dart';
 import 'package:d_app/utils/general_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: GeneralTheme.primary,
         title: Text(
           style: TextStyle(color: Colors.black),
           glucoseData.isNotEmpty
@@ -72,7 +72,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     for (var option in radioOptions)
                       RadioListTile(
                         activeColor: GeneralTheme.primary,
-                        title: Text(option),
+                        title: Text(option, style: GeneralTheme.radioTextStyle),
                         value: option,
                         groupValue: _selectedOption,
                         onChanged: (value) {
@@ -94,25 +94,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ScaffoldMessenger.of(context).clearSnackBars();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              duration: Duration(milliseconds: 500),
-                              content: Row(
-                                children: [
-                                  Icon(
-                                    Icons.check_circle_rounded,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-
-                                  const SizedBox(width: 10),
-
-                                  Expanded(
-                                    child: const Text(
-                                      'Сохранено! Вы также можете изменить свой вариант в настройках',
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
+                              content: const Text(
+                                'Сохранено! Вы также можете изменить свой вариант в настройках',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontFamily: 'LXGW'),
                               ),
+                              // content: Row(
+                              //   children: [
+                              //     Icon(Icons.check_circle_rounded),
+
+                              //     const SizedBox(width: 10),
+
+                              //     Expanded(
+                              //       child: const Text(
+                              //         'Сохранено! Вы также можете изменить свой вариант в настройках',
+                              //         overflow: TextOverflow.ellipsis,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ),
                           );
                         }, 'Сохранить вариант'),
@@ -145,22 +145,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   final todayEntries = glucoseData;
                   if (todayEntries.isEmpty) {
                     return Center(
-                      child: const Text('У вас пока нет данных за сегодня'),
+                      child: const Text(
+                        'У вас пока нет данных за сегодня',
+                        style: TextStyle(fontFamily: 'Jura'),
+                      ),
                     );
                   } else {
-                    return ListView.separated(
+                    return ListView.builder(
                       itemBuilder: (context, index) {
                         final entry = todayEntries[index];
-                        return ListTile(
-                          title: Text(
-                            '${entry.value.toStringAsFixed(1)} ${_unitText(entry.unit)}',
+                        return Slidable(
+                          endActionPane: ActionPane(
+                            motion: StretchMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  glucoseProvider.deleteEntry(entry);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                        'Запись перемещена в корзину',
+                                        style: TextStyle(fontFamily: 'LXGW'),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: Icons.delete,
+                                backgroundColor: Color(0xFFFE4A49),
+                                foregroundColor: Colors.white,
+                              ),
+                            ],
                           ),
-                          subtitle: Text(
-                            DateFormat('HH:mm').format(entry.date),
+                          child: ListTile(
+                            title: Text(
+                              '${entry.value.toStringAsFixed(1)} ${glucoseProvider.unitText(entry)}',
+                              style: GeneralTheme.listTileTitleStyle,
+                            ),
+                            subtitle: Text(
+                              DateFormat('HH:mm').format(entry.date),
+                              style: GeneralTheme.listTileSubtitleStyle,
+                            ),
                           ),
                         );
                       },
-                      separatorBuilder: (context, index) => Divider(),
+                      // separatorBuilder: (context, index) => Divider(),
                       itemCount: todayEntries.length,
                     );
                   }
@@ -197,16 +225,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       ),
       onPressed: onPressed,
-      child: Text(text, style: TextStyle(color: Colors.black)),
+      child: Text(
+        text,
+        style: TextStyle(fontFamily: 'LXGW', color: Colors.black),
+      ),
     );
-  }
-
-  String _unitText(MeasureUnit unit) {
-    switch (unit) {
-      case MeasureUnit.mmol:
-        return 'ммоль/л';
-      case MeasureUnit.mgdl:
-        return 'мг/дл';
-    }
   }
 }
