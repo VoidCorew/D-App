@@ -90,6 +90,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 headerStyle: HeaderStyle(
                   formatButtonVisible: false,
                   titleCentered: true,
+                  titleTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 availableGestures: AvailableGestures.all,
                 selectedDayPredicate: (day) => isSameDay(day, today),
@@ -98,6 +103,41 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 lastDay: DateTime.utc(2030, 4, 20),
                 pageAnimationDuration: Duration(milliseconds: 400),
                 onDaySelected: _onDaySelected,
+                calendarStyle: CalendarStyle(
+                  defaultTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  weekendTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  outsideTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  todayTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  selectedTextStyle: TextStyle(
+                    fontFamily: 'LXGW',
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  todayDecoration: BoxDecoration(
+                    color: Colors.lightGreen,
+                    shape: BoxShape.circle,
+                  ),
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.lightGreenAccent,
+                    shape: BoxShape.circle,
+                  ),
+                ),
               ),
             ),
 

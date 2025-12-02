@@ -56,6 +56,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPressed: () {},
             icon: Icon(Icons.search, color: Colors.black),
           ),
+          // IconButton(
+          //   onPressed: () {
+          //     final size = MediaQuery.of(context).size;
+          //     debugPrint("Ширина: ${size.width}");
+          //     debugPrint("Высота: ${size.height}");
+          //   },
+          //   icon: Icon(Icons.abc, color: Colors.black),
+          // ),
         ],
       ),
       body: Padding(

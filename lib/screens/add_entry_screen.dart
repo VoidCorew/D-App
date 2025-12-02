@@ -122,6 +122,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                         ),
                         border: OutlineInputBorder(),
                       ),
+                      style: TextStyle(fontFamily: 'LXGW'),
                     ),
                   ),
 
